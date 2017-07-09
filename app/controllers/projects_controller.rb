@@ -58,7 +58,7 @@ class ProjectsController < ApplicationController
     end
 
     def set_tenant
-      @tenant = Tenant.find(params[:id])
+      @tenant = Tenant.find(params[:tenant_id])
     end
 
     def verify_tenant
