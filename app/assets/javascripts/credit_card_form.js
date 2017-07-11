@@ -1,4 +1,5 @@
 // function to get params from URL
+
   function GetURLParameter(sParam) {
     var sPageURL = window.location.search.substring(1);
     var sURLVariable = sPageURL.split('&');
@@ -28,39 +29,39 @@ $(document).ready(function(){
   }
   return false;
 };
-
 // Initiate submit handler listener for any form with class cc_form
-  $('.cc_form').on('submit', submitHandler);
+  $(".cc_form").on('submit', submitHandler);
 
-// function to handle event of plan drop down change
+// handle event of plan drop down changing
   var handlePlanChange = function(plan_type, form) {
     var $form = $(form);
+
     if(plan_type == undefined) {
       plan_type = $('#tenant_plan :selected').val();
     }
 
-    if(plan_type === 'premium') {
-      $("[data-stripe]").prop('required', true)
+    if( plan_type === 'premium') {
+      $('[data-stripe]').prop('required', true);
       $form.off('submit');
       $form.on('submit', submitHandler);
-      $("[data-stripe]").show();
+      $('[data-stripe]').show();
     } else {
-      $('[data-strip]').hide();
+      $('[data-stripe]').hide();
       $form.off('submit');
       $('[data-stripe]').removeProp('required');
     }
   }
 
 // Set up plan change event listener #tenant_plan id in the forms for class cc_form
-  $("#tenant_plan").on("change", function(){
-    handlePlanChange($("#tenant_plan :selected").val(), ".cc_form");
-  })
+  $("#tenant_plan").on('change', function(event) {
+    handlePlanChange($('#tenant_plan :selected').val(), ".cc_form");
+  });
 
-// call plan change handler so that plan is set correctly in dropdown when page loads
+// call plan change handler so that the plan is set correctly in the drop down when the page loads
   handlePlanChange(GetURLParameter('plan'), ".cc_form");
 
 // function to handle token received from stripe and remove credit card field
-  stripeResponseHandler = function(status, response) {
+  stripeResponseHandler = function (status, response) {
     var token, $form;
 
     $form = $('.cc_form');
@@ -71,7 +72,7 @@ $(document).ready(function(){
       form.find("input[type=submit]").prop("disable", false);
     } else {
       token = response.id;
-      $form.append($("<input type="\hidden" name=\"payment[token]\" />").val(token));
+      $form.append($("<input type=\"hidden\" name=\"payment[token]\" />").val(token));
       $("[data-stripe=number]").remove();
       $("[data-stripe=cvv]").remove();
       $("[data-stripe=exp-year]").remove();
@@ -81,7 +82,6 @@ $(document).ready(function(){
     }
     return false;
   };
-
 // function to show errors when Stripe functionality returns an error
   show_error = function (message) {
     if($("#flash-messages").size() < 1){
